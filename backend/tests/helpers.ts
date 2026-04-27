@@ -1,6 +1,28 @@
-import { afterAll } from "bun:test";
+import { afterAll, beforeAll } from "bun:test";
+import { createApplication } from "@specific-dev/framework";
+import * as schema from "../src/db/schema/schema.js";
 
 const BASE_URL = process.env.TEST_BASE_URL || "http://localhost:3001";
+
+/**
+ * Seed the database with test data
+ */
+async function seedDatabase() {
+  try {
+    const app = await createApplication(schema);
+    const existing = await app.db.query.greetings.findFirst();
+    if (!existing) {
+      await app.db.insert(schema.greetings).values({
+        message: 'Welcome to Qasim!',
+      });
+    }
+  } catch (error) {
+    console.error('Failed to seed database:', error);
+  }
+}
+
+// Seed database before running tests
+beforeAll(seedDatabase);
 
 /**
  * Strip Content-Type: application/json when there's no body.

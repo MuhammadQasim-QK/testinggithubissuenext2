@@ -9,6 +9,9 @@ export default function HomeScreen() {
   const [message, setMessage] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+// anywhere at the top of the file
+const TEMP_DEBUG_URL = "http://example.com/api/debug";
+console.log(TEMP_DEBUG_URL);
 
   useEffect(() => {
     console.log("[HomeScreen] Fetching greeting from", GREETING_URL);
